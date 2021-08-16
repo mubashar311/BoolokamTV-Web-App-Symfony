@@ -1,0 +1,77 @@
+{% extends "AppBundle::layout.html.twig" %}
+{% block body%}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-icon" data-background-color="rose">
+                        <i class="material-icons">recent_actors</i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">Edit Competetion</h4>
+                        <br>
+                        {{form_start(form)}}
+                        <form method="#" action="#">
+                            <div class="col-md-4">
+                                <div class="fileinput fileinput-new text-center" style="    width: 100%;" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" >
+                                        <a href="#" class="btn btn-rose btn-round btn-select"><i class="material-icons">image</i> Select image </a>
+                                        <img  id="img-preview" src="{{asset(form.vars.value.media.link)|imagine_filter('actor_thumb')}}"  width="100%">
+                                    </div>
+                                    {{form_widget(form.file,{"attr":{"class":"file-hidden input-file img-selector","style":"    display: none;"}})}}
+                                    <span class="validate-input">{{form_errors(form.file)}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">Competetion title</label>
+                                    {{form_widget(form.title,{"attr":{"class":"form-control"}})}}
+                                    <span class="validate-input">{{form_errors(form.title)}}</span>
+                                </div>
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">In App Notice</label>
+                                    {{form_widget(form.inAppNotice,{"attr":{"class":"form-control"}})}}
+                                    <span class="validate-input">{{form_errors(form.inAppNotice)}}</span>
+                                </div>
+                                <div class="form-group label-floating is-empty">
+                                    <label class="control-label">Description</label>
+                                    {{form_widget(form.description,{"attr":{"class":"form-control","rows":4}})}}
+                                    <span class="validate-input">{{form_errors(form.description)}}</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label">Start Date</label>
+                                            {{form_widget(form.startDate,{"attr":{"class":"form-control"}})}}
+                                            <span class="validate-input">{{form_errors(form.startDate)}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label">End Date</label>
+                                            {{form_widget(form.endDate,{"attr":{"class":"form-control"}})}}
+                                            <span class="validate-input">{{form_errors(form.endDate)}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="">
+                                    <label>
+                                        {{form_widget(form.visible)}}  Enabled
+                                    </label>
+                                </div>
+                                <br>
+                                <span class="pull-right"><a href="{{path("app_competetion_index")}}" class="btn btn-fill btn-yellow"><i class="material-icons">arrow_back</i> Cancel</a>{{form_widget(form.save,{attr:{"class":"btn btn-fill btn-success"}})}}</span>
+                            </div>
+
+                            {{form_end(form)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}
+
