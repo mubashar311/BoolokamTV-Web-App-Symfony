@@ -85,6 +85,13 @@ class Competition
     private $nbrVotes = 0;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="votesByMovies", type="array", nullable=true)
+     */
+    private $votesByMovies = [];
+
+    /**
      * Get id
      *
      * @return int
@@ -287,6 +294,23 @@ class Competition
     {
         $this->nbrVotes = $nbrVotes;
     }
+
+    /**
+     * @return array
+     */
+    public function getVotesByMovies()
+    {
+        return $this->votesByMovies;
+    }
+
+    /**
+     * @param array $votesByMovies
+     */
+    public function setVotesByMovies(array $votesByMovies)
+    {
+        $this->votesByMovies = $votesByMovies;
+    }
+
 
 }
 

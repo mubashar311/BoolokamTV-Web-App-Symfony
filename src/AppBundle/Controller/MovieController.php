@@ -43,6 +43,85 @@ class MovieController extends Controller
         }
         return $this->render('AppBundle:Movie:api_one.html.php', array("poster" => $poster));
     }
+    public function api_vote_by_idAction(Request $request,$id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $poster=$em->getRepository("AppBundle:Poster")->find($id);
+        if ($poster==null) {
+            throw new NotFoundHttpException("Page not found");
+        }
+        $poster->setVoteCountNbr($poster->getVoteCountNbr()+1);
+
+        $repository = $em->getRepository('AppBundle:Competition');
+        $query = $repository->createQueryBuilder('p')
+            ->where(":today between p.startDate AND p.endDate")
+            ->setParameter('today',(new \DateTime()))
+            ->getQuery();
+        $competitions_list = $query->getResult();
+
+        foreach ($competitions_list as $c){
+            $arrayVotes= $c->getVotesByMovies() ? $c->getVotesByMovies() : [];
+            if (!$arrayVotes or !isset($arrayVotes[$id]))
+                $arrayVotes[$id] = 1;
+            else
+                $arrayVotes[$id] += 1;
+
+            $c->setVotesByMovies($arrayVotes);
+            $c->setNbrVotes($c->getNbrVotes() + 1);
+            $em->persist($c);
+        }
+
+        $em->persist($poster);
+        $em->flush();
+
+        return $this->render('AppBundle:Movie:api_one.html.php', array("poster" => $poster));
+    }
+
+    public function api_get_currentVoteCount_idAction(Request $request,$id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $poster=$em->getRepository("AppBundle:Poster")->find($id);
+        if ($poster==null) {
+            throw new NotFoundHttpException("Page not found");
+        }
+        $repository = $em->getRepository('AppBundle:Competition');
+        $competition = $repository->findOneBy(['visible'=>true]);
+        $competitionMovies = $competition->getVotesByMovies();
+        if (is_array($competitionMovies)){
+            uasort($competitionMovies,function ($a,$b){
+                return $b - $a;
+            });
+            //    $competitionMovies = array_slice($competitionMovies, 0, 100,true);
+        }
+        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
+        $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
+        $rank = 0;
+        $i = 0;
+        foreach ($competitionMovies as $l => $comp){
+            $i++;
+            if ((int)$l == $poster->getId())
+                $rank = $i;
+        }
+        $result = [
+            'movieId' => $poster->getId(),
+            'name' => $poster->getTitle(),
+            'currentVoteCount'  => $poster->getVoteCountNbr() != null ? $poster->getVoteCountNbr() : 0,
+            'currentVoteInCompetition' => isset($competitionMovies[$poster->getId()]) ? $competitionMovies[$poster->getId()] : 0 ,
+            'rankInCompetition' => $rank,
+            'titleCompetition' => $competition->getTitle(),
+            'descriptionCompetition' => $competition->getDescription(),
+            'startDateCompetition' => date_format($competition->getStartDate(),'d/m/Y'),
+            'endDateCompetition' => date_format($competition->getEndDate(),'d/m/Y'),
+            'totalVoteCompetition' => $competition->getNbrVotes(),
+            'mediaCompetition' => $media,
+            //'competitionMovies' => $competitionMovies
+        ];
+        $response = new Response(json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     public function api_add_viewAction(Request $request, $token) {
         if ($token != $this->container->getParameter('token_app')) {
             throw new NotFoundHttpException("Page not found");

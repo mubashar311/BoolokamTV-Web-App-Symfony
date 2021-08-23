@@ -268,6 +268,12 @@ class Poster
      */
     private $sublabel;
 
+    /**
+     * @var string
+     * @ORM\Column(name="VoteCountNbr",type="integer", nullable=true)
+     */
+    private $VoteCountNbr;
+
     public function __construct()
     {
         $this->downloads = 0 ;
@@ -1244,4 +1250,21 @@ class Poster
         $this->label = $label;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getVoteCountNbr()
+    {
+        return $this->VoteCountNbr;
+    }
+
+    /**
+     * @param string $VoteCountNbr
+     */
+    public function setVoteCountNbr($VoteCountNbr)
+    {
+        $this->VoteCountNbr = $VoteCountNbr;
+    }
+
 }

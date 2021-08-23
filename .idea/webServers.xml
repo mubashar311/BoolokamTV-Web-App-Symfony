@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8fded88a-04d7-4374-b720-a17e3141282b" name="webflix">
+        <fileTransfer rootFolder="/home/customer/www/bonnyj5.sg-host.com" accessType="SFTP" host="guk1025.siteground.eu" port="18765" sshConfigId="4e372d5d-a7a4-48b6-be89-75cee979e6f1" sshConfig="u1511-x2yafdo7ofm0@guk1025.siteground.eu:18765 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

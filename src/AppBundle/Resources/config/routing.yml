@@ -582,6 +582,12 @@ api_movie_by_user:
 api_movie_by_id:
     path:     /api/movie/by/{id}/{token}/{purchase}/
     defaults: { _controller: AppBundle:Movie:api_by_id }
+api_movie_vote_by_id:
+    path: /api/movie/vote/by/{id}
+    defaults: { _controller: AppBundle:Movie:api_vote_by_id }
+api_movie_CurrentVoteCount_by_id:
+    path: /api/movie/CurrentVoteCount/by/{id}
+    defaults: { _controller: AppBundle:Movie:api_get_currentVoteCount_id }
 api_movie_add_download:
     path:     /api/movie/add/download/{token}/{purchase}/
     defaults: { _controller: AppBundle:Movie:api_add_download }
@@ -926,14 +932,11 @@ api_competition_all:
     path:     /api/competition/all/{token}
     defaults: { _controller: AppBundle:Competition:api_competition_all }
 
+api_competition_total_votes:
+    path:     /api/competition/totalVotes/{token}
+    defaults: { _controller: AppBundle:Competition:api_competition_total_votes }
+
 api_competition_datails:
     path:     /api/competition/details/{token}/{id}
-    defaults: { _controller: AppBundle:Competition:api_competition_details }
-    requirements:
-        id:  \d+
+    defaults: { _controller: AppBundle:Competition:api_competition_details, id:null }
 
-api_competition_vote:
-    path:     /api/competition/vote/{token}/{id}
-    defaults: { _controller: AppBundle:Competition:api_competition_vote }
-    requirements:
-        id:  \d+

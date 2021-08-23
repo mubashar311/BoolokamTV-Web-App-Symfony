@@ -15,6 +15,8 @@
 	$pstr["comment"]= $poster->getComment();
 	$pstr["playas"] = $poster->getPlayas();
 	$pstr["classification"]= $poster->getClassification();
+    $pstr["VoteCountNbr"]= $poster->getVoteCountNbr();
+    $pstr["viewesCountNbv"] = $poster->getViews();
 	$pstr["image"] = $this['imagine']->filter($view['assets']->getUrl($poster->getPoster()->getLink()), 'poster_thumb');
 	if($poster->getCover())
 		$pstr["cover"] = $this['imagine']->filter($view['assets']->getUrl($poster->getCover()->getLink()), 'cover_thumb');

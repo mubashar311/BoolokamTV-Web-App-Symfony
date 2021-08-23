@@ -13,8 +13,8 @@ stof_doctrine_extensions:
             sluggable: true
 parameters:
     locale: en
-    files_directory: '%kernel.root_dir%/../public/uploads/'
-    files_directory_mp3: '%kernel.root_dir%/../public/files/'
+    files_directory: '%kernel.root_dir%/../public_html/uploads/'
+    files_directory_mp3: '%kernel.root_dir%/../public_html/files/'
     files_directory_read: '/uploads/'
     files_directory_read_mp3: '/files/'
     token_app: "4F5A9C3D9A86FA54EACEDDD635185"
@@ -121,12 +121,12 @@ liip_imagine:
     resolvers:
         default:
             web_path:
-                web_root:  %kernel.root_dir%/../public/
+                web_root:  %kernel.root_dir%/../public_html/
                 cache_prefix:  uploads/cache
     loaders:
         default:
             filesystem:
-                data_root:  %kernel.root_dir%/../public/
+                data_root:  %kernel.root_dir%/../public_html/
     filter_sets:
         cache: ~
         user_image:
@@ -213,6 +213,10 @@ liip_imagine:
             quality: 100
             filters:
                 thumbnail: { size: [100, 60], mode: outbound }
+        competiton_thumb:
+            quality: 100
+            filters:
+                thumbnail: { size: [400, 500], mode: outbound }
 hwi_oauth:
     #this is my custom user provider, created from FOSUBUserProvider - will manage the 
     #automatic user registration on your site, with data from the provider (facebook. google, etc.)

@@ -222,7 +222,8 @@ foreach ($bestrated as $key => $poster) {
 		$pstr["comment"]= $poster->getComment();
 		$pstr["duration"] = $poster->getDuration();
 		$pstr["downloadas"] = $poster->getDownloadas();
-		$pstr["playas"] = $poster->getPlayas();	
+		$pstr["playas"] = $poster->getPlayas();
+        $pstr["viewesCountNbv"] = $poster->getViews() ? $poster->getViews() : 0;
 		$pstr["classification"]= $poster->getClassification();
 		$pstr["image"] = $this['imagine']->filter($view['assets']->getUrl($poster->getPoster()->getLink()), 'poster_thumb');
 		if($poster->getCover())
@@ -297,6 +298,7 @@ foreach ($popular as $key => $poster) {
 		$pstr["duration"] = $poster->getDuration();
 		$pstr["downloadas"] = $poster->getDownloadas();
 		$pstr["playas"] = $poster->getPlayas();
+        $pstr["viewesCountNbv"] = $poster->getViews() ? $poster->getViews() : 0;
 		$pstr["classification"]= $poster->getClassification();
 		$pstr["image"] = $this['imagine']->filter($view['assets']->getUrl($poster->getPoster()->getLink()), 'poster_thumb');
 		if($poster->getCover())
@@ -376,6 +378,7 @@ foreach ($genres as $key => $genre) {
 			$pstr["duration"] = $poster->getDuration();
 			$pstr["downloadas"] = $poster->getDownloadas();
 			$pstr["playas"] = $poster->getPlayas();
+            $pstr["viewesCountNbv"] = $poster->getViews() ? $poster->getViews() : 0;
 			$pstr["classification"]= $poster->getClassification();
 			$pstr["image"] = $this['imagine']->filter($view['assets']->getUrl($poster->getPoster()->getLink()), 'poster_thumb');
 			if($poster->getCover())

@@ -17,6 +17,7 @@ foreach ($posters_list as $key => $poster) {
 	$pstr["duration"] = $poster->getDuration();
 	$pstr["downloadas"] = $poster->getDownloadas();
 	$pstr["playas"] = $poster->getPlayas();
+    $pstr["viewesCountNbv"] = $poster->getViews();
 	$pstr["classification"]= $poster->getClassification();
 	$pstr["image"] = $this['imagine']->filter($view['assets']->getUrl($poster->getPoster()->getLink()), 'poster_thumb');
 	if($poster->getCover())

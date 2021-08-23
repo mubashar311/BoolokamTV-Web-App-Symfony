@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="localhost" id="4b5d8598-a44d-466b-a154-2b6130631618" port="22" nameFormat="DESCRIPTIVE" />
+      <sshConfig host="guk1025.siteground.eu" id="4e372d5d-a7a4-48b6-be89-75cee979e6f1" keyPath="C:\Users\21692\Desktop\k.key" port="18765" nameFormat="DESCRIPTIVE" username="u1511-x2yafdo7ofm0" />
+    </configs>
+  </component>
+</project>

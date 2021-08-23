@@ -152,7 +152,8 @@ class CompetitionController extends Controller
          *
          * @var Competition $competition
          */
-        foreach ($competitions_list as $competition)
+        foreach ($competitions_list as $competition){
+            $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
             $result[] = [
                 'id' => $competition->getId(),
                 'title' => $competition->getTitle(),
@@ -160,8 +161,10 @@ class CompetitionController extends Controller
                 'startDate' => date_format($competition->getStartDate(),'d/m/Y'),
                 'endDate' => date_format($competition->getEndDate(),'d/m/Y'),
                 'nbrVotes' => $competition->getNbrVotes(),
-                'media' => $competition->getMedia() ? $competition->getMedia()->getUrl() : null
+                'media' =>  $media
             ];
+        }
+
 
         $response = new Response(json_encode($result));
         $response->headers->set('Content-Type', 'application/json');
@@ -182,13 +185,40 @@ class CompetitionController extends Controller
             ->addOrderBy('p.id', $dir)
             ->getQuery();
         $competitions_list = $query->getResult();
-
+        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
         $result = [];
+
         /**
          *
          * @var Competition $competition
          */
-        foreach ($competitions_list as $competition)
+        foreach ($competitions_list as $competition){
+
+            $topMovies = [];
+            $competitionMovies = $competition->getVotesByMovies();
+            if (is_array($competitionMovies)){
+                uasort($competitionMovies,function ($a,$b){
+                    return $b - $a;
+                });
+                $competitionMovies = array_slice($competitionMovies, 0, 10,true);
+            }
+
+            else
+                $competitionMovies=[];
+            foreach ($competitionMovies as $k => $vote){
+                $repositoryMovie = $em->getRepository('AppBundle:Poster');
+
+                $m = $repositoryMovie->findOneBy(['id'=>$k]);
+                if ($m)
+                    $topMovies[] =[
+                      'id' => $m->getId(),
+                      'title' => $m->getTitle(),
+                      'image' => $imagineCacheManager->getBrowserPath("uploads/".$m->getPoster()->getExtension()."/".$m->getPoster()->getImage(), 'poster_thumb'),
+                      'nbrVotes' => $vote
+                    ];
+            }
+
+            $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
             $result[] = [
                 'id' => $competition->getId(),
                 'title' => $competition->getTitle(),
@@ -196,33 +226,12 @@ class CompetitionController extends Controller
                 'startDate' => date_format($competition->getStartDate(),'d/m/Y'),
                 'endDate' => date_format($competition->getEndDate(),'d/m/Y'),
                 'nbrVotes' => $competition->getNbrVotes(),
-                'media' => $competition->getMedia() ? $competition->getMedia()->getUrl() : null
+                'media' => $media,
+                'topMovies' => $topMovies
             ];
 
-        $response = new Response(json_encode($result));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
-    public function api_competition_detailsAction(Request $request,$token, $id)
-    {
-        if ($token!=$this->container->getParameter('token_app')) {
-            throw new NotFoundHttpException("Page not found");
         }
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('AppBundle:Competition');
-        $competition = $repository->findOneBy(['id'=>$id]);
 
-        $result = [
-            'id' => $competition->getId(),
-            'title' => $competition->getTitle(),
-            'description' => $competition->getDescription(),
-            'startDate' => date_format($competition->getStartDate(),'d/m/Y'),
-            'endDate' => date_format($competition->getEndDate(),'d/m/Y'),
-            'nbrVotes' => $competition->getNbrVotes(),
-            'media' => $competition->getMedia() ? $competition->getMedia()->getUrl() : null
-        ];
 
         $response = new Response(json_encode($result));
         $response->headers->set('Content-Type', 'application/json');
@@ -230,16 +239,68 @@ class CompetitionController extends Controller
         return $response;
     }
 
-    public function api_competition_voteAction(Request $request,$token, $id)
+
+    public function api_competition_total_votesAction(Request $request,$token)
     {
         if ($token!=$this->container->getParameter('token_app')) {
             throw new NotFoundHttpException("Page not found");
         }
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:Competition');
-        $competition = $repository->findOneBy(['id'=>$id]);
-        $competition->setNbrVotes($competition->getNbrVotes()+1);
-        $em->flush();
+        $dir = "DESC";
+        $query = $repository->createQueryBuilder('p')
+            ->select('SUM(p.nbrVotes)')
+            ->where("p.visible = true")
+            ->addOrderBy('p.id', $dir)
+            ->getQuery();
+        $competitions_votes = (int)$query->getSingleScalarResult();
+        $result = ['totalVotes'=>$competitions_votes];
+
+        $response = new Response(json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function api_competition_detailsAction(Request $request,$token,$id)
+    {
+        if ($token!=$this->container->getParameter('token_app')) {
+            throw new NotFoundHttpException("Page not found");
+        }
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Competition');
+        if(is_null($id))
+            $competition = $repository->findOneBy(['visible'=>true]);
+        else
+            $competition = $repository->findOneBy(['id'=>$id]);
+
+        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
+
+        $topMovies = [];
+        $competitionMovies = $competition->getVotesByMovies();
+        if (is_array($competitionMovies)){
+            uasort($competitionMovies,function ($a,$b){
+                return $b - $a;
+            });
+        //    $competitionMovies = array_slice($competitionMovies, 0, 100,true);
+        }
+
+        else
+            $competitionMovies=[];
+        foreach ($competitionMovies as $k => $vote){
+            $repositoryMovie = $em->getRepository('AppBundle:Poster');
+
+            $m = $repositoryMovie->findOneBy(['id'=>$k]);
+            if ($m)
+                $topMovies[] =[
+                    'id' => $m->getId(),
+                    'title' => $m->getTitle(),
+                    'image' => $imagineCacheManager->getBrowserPath("uploads/".$m->getPoster()->getExtension()."/".$m->getPoster()->getImage(), 'poster_thumb'),
+                    'nbrVotes' => $vote
+                ];
+        }
+
+        $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
         $result = [
             'id' => $competition->getId(),
             'title' => $competition->getTitle(),
@@ -247,7 +308,8 @@ class CompetitionController extends Controller
             'startDate' => date_format($competition->getStartDate(),'d/m/Y'),
             'endDate' => date_format($competition->getEndDate(),'d/m/Y'),
             'nbrVotes' => $competition->getNbrVotes(),
-            'media' => $competition->getMedia() ? $competition->getMedia()->getUrl() : null
+            'media' => $media,
+            'topMovies' => $topMovies
         ];
 
         $response = new Response(json_encode($result));
