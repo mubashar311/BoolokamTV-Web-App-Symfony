@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Symfony Standard Edition
 ========================
 
@@ -77,3 +78,7 @@ Enjoy!
 [15]: https://symfony.com/doc/current/setup.html
 # webflix
 # webflix
+=======
+# BoolokamTV-Web-App-Symfony
+ SymfonyWebApp
+>>>>>>> 75d6a5b5b19267de5c2f2d1a26eed13fc308a916
