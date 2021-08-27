@@ -298,6 +298,7 @@ class MovieController extends Controller
             16
         );
         $movies_count = $em->getRepository('AppBundle:Poster')->countMovies();
+
         return $this->render('AppBundle:Movie:index.html.twig', array("movies_count" => $movies_count, "movies" => $movies));
     }
     function get_image_mime_type($image_path)

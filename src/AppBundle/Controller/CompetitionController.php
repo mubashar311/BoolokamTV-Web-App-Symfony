@@ -213,12 +213,12 @@ class CompetitionController extends Controller
                     $topMovies[] =[
                       'id' => $m->getId(),
                       'title' => $m->getTitle(),
-                      'image' => $imagineCacheManager->getBrowserPath("uploads/".$m->getPoster()->getExtension()."/".$m->getPoster()->getImage(), 'poster_thumb'),
+                      'image' => $imagineCacheManager->getBrowserPath($m->getPoster()->getLink(), 'poster_thumb'),
                       'nbrVotes' => $vote
                     ];
             }
 
-            $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
+            $media = $imagineCacheManager->getBrowserPath($competition->getMedia()->getLink(), 'actor_thumb');
             $result[] = [
                 'id' => $competition->getId(),
                 'title' => $competition->getTitle(),
@@ -295,12 +295,12 @@ class CompetitionController extends Controller
                 $topMovies[] =[
                     'id' => $m->getId(),
                     'title' => $m->getTitle(),
-                    'image' => $imagineCacheManager->getBrowserPath("uploads/".$m->getPoster()->getExtension()."/".$m->getPoster()->getImage(), 'poster_thumb'),
+                    'image' => $imagineCacheManager->getBrowserPath($m->getPoster()->getLink(), 'poster_thumb'),
                     'nbrVotes' => $vote
                 ];
         }
 
-        $media = $imagineCacheManager->getBrowserPath("uploads/".$competition->getMedia()->getExtension()."/".$competition->getMedia()->getImage(), 'actor_thumb');
+        $media = $imagineCacheManager->getBrowserPath($competition->getMedia()->getLink(), 'actor_thumb');
         $result = [
             'id' => $competition->getId(),
             'title' => $competition->getTitle(),

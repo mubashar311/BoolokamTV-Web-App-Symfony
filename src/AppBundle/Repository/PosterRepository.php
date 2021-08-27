@@ -22,7 +22,8 @@ class PosterRepository extends EntityRepository
 	}
 	public function countMovies() {
 		$query = $this->createQueryBuilder('e')->select('count(e)')->where("e.type like 'movie'")->getQuery();
-		return $query->getSingleScalarResult();
+		$count = $query->getSingleScalarResult();
+		return $count;
 	}
 	public function countSeries() {
 		$query = $this->createQueryBuilder('e')->select('count(e)')->where("e.type like 'serie'")->getQuery();
