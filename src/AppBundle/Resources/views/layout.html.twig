@@ -100,6 +100,19 @@
                                 <p>Movies</p>
                             </a>
                         </li>
+                         <li {% if "app_main_movie_slider_" in  app.request.attributes.get('_route')  %} class="active"{% endif %}>
+                             <a href="{{path("app_main_movie_slider_index")}}">
+                                 <i class="material-icons">slow_motion_video</i>
+                                 <p>Main Movies Slider</p>
+                             </a>
+                         </li>
+                         <li {% if "app_trending_movie_" in  app.request.attributes.get('_route')  %} class="active"{% endif %}>
+                             <a href="{{path("app_trending_movie_index")}}">
+                                 <i class="material-icons">whatshot</i>
+                                 <p>Trending Movies</p>
+                             </a>
+                         </li>
+
                         <li {% if  "app_serie_" in  app.request.attributes.get('_route') %} class="active"{% endif %}>
                             <a href="{{path("app_serie_index")}}">
                                 <i class="material-icons">tv</i>

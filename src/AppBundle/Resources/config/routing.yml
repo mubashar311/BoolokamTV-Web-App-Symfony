@@ -940,3 +940,67 @@ api_competition_datails:
     path:     /api/competition/details/{token}/{id}
     defaults: { _controller: AppBundle:Competition:api_competition_details, id:null }
 
+# Main Movies Slider
+
+app_main_movie_slider_add:
+    path: /admin/MainMovieSlide/add.html
+    defaults: { _controller: AppBundle:MainMovieSlide:add}
+app_main_movie_slider_index:
+    path: /admin/MainMovieSlide/index.html
+    defaults: { _controller: AppBundle:MainMovieSlide:index}
+app_main_movie_slider_edit:
+    path: /admin/MainMovieSlide/{id}.html
+    defaults: { _controller: AppBundle:MainMovieSlide:edit}
+    requirements:
+        id:  \d+
+app_main_movie_slider_delete:
+    path: /admin/MainMovieSlide/delete/{id}.html
+    defaults: { _controller: AppBundle:MainMovieSlide:delete}
+    requirements:
+        id:  \d+
+app_main_movie_slider_up:
+    path: /admin/MainMovieSlide/up/{id}.html
+    defaults: { _controller: AppBundle:MainMovieSlide:up}
+    requirements:
+        id:  \d+
+app_main_movie_slider_down:
+    path: /admin/MainMovieSlide/down/{id}.html
+    defaults: { _controller: AppBundle:MainMovieSlide:down}
+    requirements:
+        id:  \d+
+api_main_movie_slider_all:
+    path:     /api/MainMovieSlide/all/{token}
+    defaults: { _controller: AppBundle:MainMovieSlide:api_all }
+
+
+# Trending movies
+
+app_trending_movie_add:
+    path: /admin/TrendingMovie/add.html
+    defaults: { _controller: AppBundle:TrendingMovie:add}
+app_trending_movie_index:
+    path: /admin/TrendingMovie/index.html
+    defaults: { _controller: AppBundle:TrendingMovie:index}
+app_trending_movie_edit:
+    path: /admin/TrendingMovie/{id}.html
+    defaults: { _controller: AppBundle:TrendingMovie:edit}
+    requirements:
+        id:  \d+
+app_trending_movie_delete:
+    path: /admin/TrendingMovie/delete/{id}.html
+    defaults: { _controller: AppBundle:TrendingMovie:delete}
+    requirements:
+        id:  \d+
+app_trending_movie_up:
+    path: /admin/TrendingMovie/up/{id}.html
+    defaults: { _controller: AppBundle:TrendingMovie:up}
+    requirements:
+        id:  \d+
+app_trending_movie_down:
+    path: /admin/TrendingMovie/down/{id}.html
+    defaults: { _controller: AppBundle:TrendingMovie:down}
+    requirements:
+        id:  \d+
+app_trending_movie_all:
+    path:     /api/TrendingMovie/all/{token}
+    defaults: { _controller: AppBundle:TrendingMovie:api_all }

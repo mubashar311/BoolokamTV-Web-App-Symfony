@@ -1,5 +1,6 @@
 <?php 
 namespace AppBundle\Controller;
+use AppBundle\Entity\votesTrack;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Poster;
 use AppBundle\Entity\Genre;
@@ -50,7 +51,7 @@ class MovieController extends Controller
         if ($poster==null) {
             throw new NotFoundHttpException("Page not found");
         }
-        $poster->setVoteCountNbr($poster->getVoteCountNbr()+1);
+
 
         $repository = $em->getRepository('AppBundle:Competition');
         $query = $repository->createQueryBuilder('p')
@@ -59,16 +60,48 @@ class MovieController extends Controller
             ->getQuery();
         $competitions_list = $query->getResult();
 
-        foreach ($competitions_list as $c){
-            $arrayVotes= $c->getVotesByMovies() ? $c->getVotesByMovies() : [];
-            if (!$arrayVotes or !isset($arrayVotes[$id]))
-                $arrayVotes[$id] = 1;
-            else
-                $arrayVotes[$id] += 1;
+        $ip = $request->getClientIp();
 
-            $c->setVotesByMovies($arrayVotes);
-            $c->setNbrVotes($c->getNbrVotes() + 1);
-            $em->persist($c);
+        $trackvoteRep = $em->getRepository('AppBundle:votesTrack');
+
+        $datetodelete = new \DateTime();
+        date_modify($datetodelete,'-12 hour');
+        $queryTrdel = $trackvoteRep->createQueryBuilder('vtd')
+            ->delete()
+            ->where('vtd.date < :today')
+            ->setParameter('today', $datetodelete)
+            ->getQuery()->getResult();
+
+        $queryTr = $trackvoteRep->createQueryBuilder('vt')
+            ->select('COUNT(vt)')
+            ->where('vt.ip = :ipadrss')
+            ->setParameter('ipadrss',$ip)
+            ->andWhere('vt.idposter = :id')
+            ->setParameter('id',$id)
+            ->getQuery();
+        $tot = $queryTr->getSingleScalarResult();
+        if ($tot and $tot != 0) {
+
+        }else{
+
+            $poster->setVoteCountNbr($poster->getVoteCountNbr()+1);
+            $newtrack = new votesTrack();
+            $newtrack->setDate(new \DateTime());
+            $newtrack->setIp($ip);
+            $newtrack->setIdposter($id);
+            $em->persist($newtrack);
+
+            foreach ($competitions_list as $c){
+                $arrayVotes= $c->getVotesByMovies() ? $c->getVotesByMovies() : [];
+                if (!$arrayVotes or !isset($arrayVotes[$id]))
+                    $arrayVotes[$id] = 1;
+                else
+                    $arrayVotes[$id] += 1;
+
+                $c->setVotesByMovies($arrayVotes);
+                $c->setNbrVotes($c->getNbrVotes() + 1);
+                $em->persist($c);
+            }
         }
 
         $em->persist($poster);
