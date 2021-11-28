@@ -18,6 +18,16 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<script src="https://kit.fontawesome.com/017eaf7e3f.js" crossorigin="anonymous"></script>
+		<style>
+			.mub-list-style{
+				margin-top: -16px;
+				font-size: 12px;
+				color: #FFFFFF;
+			}
+			.mub-list-style-img{
+				width: 25px
+			}
+		</style>
 	</head>
 	<body alt="{{app.request.schemeAndHttpHost ~ app.request.baseUrl}}" class="{{ (app.session.get('theme') == "light") ? 'light-mode' : 'dark-mode' }}">
 		{% for type, messages in app.session.flashbag.all() %}
@@ -35,44 +45,105 @@
 		<div class="container-fluid">
 			<div class="row main-row">
 				<div class="sidebar">
-					<h2 class="page-header logo-app">
-						{{render(controller("WebBundle:Home:logo"))}}
-					</h2>
-					<div class="nav-bar-container" >
-						<nav class="navbar bg-light left-navbar"  >
-							<ul class="navbar-nav">
-									{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-										{% if app.user.subscribed %}
-											<p class="btn  btn-subscription"><i class="fas fa-crown"></i> You are premuim<p/>
-										{% else %}
-											<a href="{{path("wep_subscription_subscribe")}}" class="btn  btn-subscription"><i class="fas fa-star"></i> Subscribe now !</a>
-										{% endif %}
-									{% else %}
-											<a href="{{path("wep_subscription_subscribe")}}" class="btn  btn-subscription"><i class="fas fa-star"></i> Subscribe now !</a>
-									{% endif %}
-									<li class="nav-item {% if "web_home_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a  class="nav-link" href="{{path("web_home_index")}}"> <i class="fas fa-home"></i> Home</a></li class="nav-item">
-									<li class="nav-item {% if "wep_movie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_movie_index",{genre: "all",order:"newest"})}}"><i class="fas fa-film"></i>  Movies</a></li class="nav-item">
-									<li class="nav-item {% if "wep_serie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_serie_index",{genre: "all",order:"newest"})}}"><i class="fas fa-desktop"></i> Tv Shows</a></li class="nav-item">
-									<li class="nav-item {% if "wep_channel_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}"><i class="fas fa-bullseye"></i> Tv Channels</a></li class="nav-item">
-									<li class="nav-item {% if "wep_home_mylist" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}"><i class="fas fa-folder"></i>  My list</a></li>
-								</ul>
-							</nav>
-						</div>
-						<nav class="navbar bg-light left-navbar bottom-navbar">
-							{% if app.session.get('theme') == "light" %}
-								<a  id="lightmode" href="#" style="display:none"><i class="fas fa-sun"></i></a>
-								<a  id="darkmode" href="#" ><i class="fas fa-moon"></i> </a>
-							{% else %}
-								<a  id="lightmode" href="#" ><i class="fas fa-sun"></i></a>
-								<a  id="darkmode" href="#" style="display:none"><i class="fas fa-moon"></i> </a>
-							{% endif %}
-							<ul class="navbar-nav">
-								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_contact")}}"><i class="fas fa-envelope"></i> Contact us</a></li class="nav-item">
-								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_faq")}}"><i class="fas fa-question-circle"></i> FAQ & Support</a></li class="nav-item">
-								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_privacy")}}"><i class="fas fa-lock"></i> Privacy Policy</a></li class="nav-item">
-								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_refund")}}"><i class="fas fa-dollar-sign"></i> Refund Poliy</a></li class="nav-item">
-							</ul>
-						</nav>
+						<h2 class="page-header logo-app">
+							{{render(controller("WebBundle:Home:logo"))}}
+						</h2>
+						<div class="nav-bar-container" >
+							<nav class="navbar bg-light left-navbar"  >
+								<ul class="navbar-nav text-center">
+	{#									{% if is_granted('IS_AUTHENTICATED_FULLY') %}#}
+	{#										{% if app.user.subscribed %}#}
+	{#											<p class="btn  btn-subscription"><i class="fas fa-crown"></i> You are premuim<p/>#}
+	{#										{% else %}#}
+	{#											<a href="{{path("wep_subscription_subscribe")}}" class="btn  btn-subscription"><i class="fas fa-star"></i> Subscribe now !</a>#}
+	{#										{% endif %}#}
+	{#									{% else %}#}
+	{#											<a href="{{path("wep_subscription_subscribe")}}" class="btn  btn-subscription"><i class="fas fa-star"></i> Subscribe now !</a>#}
+	{#									{% endif %}#}
+
+	{#									<li class="nav-item {% if "web_home_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a  class="nav-link" href="{{path("web_home_index")}}"> <i class="fas fa-home"></i> Home 1234</a></li>#}
+	{#									<li class="nav-item {% if "wep_movie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_movie_index",{genre: "all",order:"newest"})}}"><i class="fas fa-film"></i>  Movies</a></li class="nav-item">#}
+	{#									<li class="nav-item {% if "wep_serie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_serie_index",{genre: "all",order:"newest"})}}"><i class="fas fa-desktop"></i> Tv Shows</a></li class="nav-item">#}
+	{#									<li class="nav-item {% if "wep_channel_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}"><i class="fas fa-bullseye"></i> Tv Channels</a></li class="nav-item">#}
+	{#									<li class="nav-item {% if "wep_home_mylist" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}"><i class="fas fa-folder"></i>  My list</a></li>#}
+
+	{#								clone#}
+
+									<li class="nav-item">
+										<a  class="nav-link" href="{{path("web_home_index")}}">
+											<img src="{{ absolute_url(asset('uploads/png/Path-1323.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "web_home_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a  class="nav-link" href="{{path("web_home_index")}}">Home</a></li>
+
+									<li class="nav-item">
+										<a class="nav-link" href="{{path("wep_movie_index",{genre: "all",order:"newest"})}}">
+											<img src="{{ absolute_url(asset('uploads/png/movieclapper.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_movie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_movie_index",{genre: "all",order:"newest"})}}">Movies</a></li>
+
+									<li class="nav-item">
+										<a class="nav-link" href="{{path("wep_serie_index",{genre: "all",order:"newest"})}}">
+											<img src="{{ absolute_url(asset('uploads/png/playlist.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_serie_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_serie_index",{genre: "all",order:"newest"})}}">Tv Shows</a></li>
+
+									<li class="nav-item">
+										<a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}">
+											<img src="{{ absolute_url(asset('uploads/png/music-note-list.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_channel_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}">Music</a></li>
+
+
+
+									<li class="nav-item">
+										<a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}">
+											<img src="{{ absolute_url(asset('uploads/png/playlist.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_channel_index" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link" href="{{path("wep_channel_index",{category: "all",country: "all",order:"newest"})}}">Tv Channels</a></li>
+
+									<li class="nav-item"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}">
+											<img src="{{ absolute_url(asset('uploads/png/playlist.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_home_mylist" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}"> My list</a></li>
+
+
+									<li class="nav-item"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}">
+											<img src="{{ absolute_url(asset('uploads/png/Icon material-school.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_home_mylist" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}"> Campus</a></li>
+
+									<li class="nav-item"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}">
+											<img src="{{ absolute_url(asset('uploads/png/podium.png')) }}" class="mub-list-style-img">
+										</a>
+									</li>
+									<li class="nav-item mub-list-style {% if "wep_home_mylist" in  app.request.attributes.get('_route') %} active {% endif %}"><a class="nav-link {% if  not is_granted('IS_AUTHENTICATED_FULLY') %} open-login {% endif %}" href="{{path("wep_home_mylist")}}"> Competition</a></li>
+
+									</ul>
+								</nav>
+							</div>
+
+{#						<nav class="navbar bg-light left-navbar bottom-navbar">#}
+{#							{% if app.session.get('theme') == "light" %}#}
+{#								<a  id="lightmode" href="#" style="display:none"><i class="fas fa-sun"></i></a>#}
+{#								<a  id="darkmode" href="#" ><i class="fas fa-moon"></i> </a>#}
+{#							{% else %}#}
+{#								<a  id="lightmode" href="#" ><i class="fas fa-sun"></i></a>#}
+{#								<a  id="darkmode" href="#" style="display:none"><i class="fas fa-moon"></i> </a>#}
+{#							{% endif %}#}
+{#							<ul class="navbar-nav">#}
+{#								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_contact")}}"><i class="fas fa-envelope"></i> Contact us</a></li class="nav-item">#}
+{#								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_faq")}}"><i class="fas fa-question-circle"></i> FAQ & Support</a></li class="nav-item">#}
+{#								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_privacy")}}"><i class="fas fa-lock"></i> Privacy Policy</a></li class="nav-item">#}
+{#								<li class="nav-item"><a class="nav-link" href="{{path("wep_home_refund")}}"><i class="fas fa-dollar-sign"></i> Refund Poliy</a></li class="nav-item">#}
+{#							</ul>#}
+{#						</nav>#}
 					</div>
 					<div class="close-menu-left-btn"></div>
 					<div class="main">
@@ -100,15 +171,21 @@
 							</div>
 						<div class="row top-nav">
 							<div class="col-sm-3 col-md-3 " >
-								<div class="tab-title">{% block title %}{% endblock %}</div>
+{#								<div class="tab-title">{% block title %}{% endblock %}</div>#}
+								<div class="tab-title">BoolokamTV</div>
 							</div>
 							<div class="col-sm-6 col-md-6 search-form" >
 								<form action="{{path("wep_home_search")}}" class="navbar-form" role="search">
-									<div class="search-group">
-										<i class="fas fa-search"></i>
-										<input type="text" class="form-control" placeholder="Movies,Tv Shows , Tv Channels , Actors ..." name="q">
-										<button class="btn btn-default" type="submit">Search</button>
+									<!-- Actual search box -->
+									<div class="form-group has-search mt-2">
+										<span class="fa fa-search form-control-feedback" style="margin-left: 10px;"></span>
+										<input type="text" class="form-control rounded-pill ps-5" placeholder="Search" style="margin-top: -31px;padding-left: 39px;">
 									</div>
+{#									<div class="search-group">#}
+{#										<i class="fas fa-search"></i>#}
+{#										<input type="text" class="form-control" placeholder="Movies,Tv Shows , Tv Channels , Actors ..." name="q">#}
+{#										<button class="btn btn-default" type="submit">Search</button>#}
+{#									</div>#}
 								</form>
 								<button class="btn btn-primary float-right for-phone search-btn-close"><i class="fas fa-times"></i></button>
 
